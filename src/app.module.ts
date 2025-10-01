@@ -17,7 +17,9 @@ import { HealthController } from './health/health.controller';
       password: process.env.DB_PASSWORD || 'password',
       database: process.env.DB_NAME || 'university_db',
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      synchronize: process.env.NODE_ENV !== 'production',
+      synchronize: true, // Siempre sincronizar para desarrollo
+      dropSchema: process.env.NODE_ENV === 'development', // Recrear schema en desarrollo
+      logging: process.env.NODE_ENV === 'development' ? ['query', 'error'] : ['error'],
     }),
     UniversityModule,
   ],
