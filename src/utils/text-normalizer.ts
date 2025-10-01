@@ -23,9 +23,19 @@ export function normalizeForDisplay(text: string): string {
   const cleaned = trim(text)
     .replace(/\s+/g, ' ') // Múltiples espacios a uno solo
     .replace(/\.{2,}/g, '.') // Múltiples puntos a uno solo
-    .replace(/-{2,}/g, '-'); // Múltiples guiones a uno solo
+    .replace(/-{2,}/g, '-') // Múltiples guiones a uno solo
+    .toLowerCase() // Todo en minúsculas para guardar en BD
+    .trim();
 
-  return startCase(cleaned); // Primera letra de cada palabra en mayúscula
+  return cleaned;
+}
+
+export function formatForResponse(text: string): string {
+  if (!text || typeof text !== 'string') {
+    return '';
+  }
+
+  return startCase(text); // Primera letra de cada palabra en mayúscula para mostrar
 }
 
 export function normalizeToSlug(text: string): string {

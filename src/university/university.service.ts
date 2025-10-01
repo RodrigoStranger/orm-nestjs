@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Not } from 'typeorm';
 import { UniversityEntity } from './university.entity';
 import { CreateUniversityDto } from './dto/create-university.dto';
-import { normalizeForComparison, normalizeForDisplay } from '../utils';
+import { normalizeForComparison, normalizeForDisplay, formatForResponse } from '../utils';
 
 @Injectable()
 export class UniversityService {
@@ -11,6 +11,13 @@ export class UniversityService {
     @InjectRepository(UniversityEntity)
     private readonly universityRepository: Repository<UniversityEntity>,
   ) {}
+
+  private formatUniversityForResponse(university: UniversityEntity) {
+    return {
+      id: university.id,
+      name: formatForResponse(university.name)
+    };
+  }
 
   async create(createUniversityDto: CreateUniversityDto): Promise<{
     status: number;
@@ -39,27 +46,27 @@ export class UniversityService {
     return {
       status: HttpStatus.CREATED,
       mensaje: 'Universidad creada exitosamente',
-      university: savedUniversity,
+      university: this.formatUniversityForResponse(savedUniversity),
     };
   }
 
   async findAll(): Promise<{
     status: number;
     mensaje: string;
-    universities: UniversityEntity[];
+    universities: any[];
   }> {
     const universities = await this.universityRepository.find();
     return {
       status: HttpStatus.OK,
       mensaje: 'Universidades obtenidas exitosamente',
-      universities,
+      universities: universities.map(university => this.formatUniversityForResponse(university)),
     };
   }
 
   async findOne(id: number): Promise<{
     status: number;
     mensaje: string;
-    university: UniversityEntity;
+    university: any;
   }> {
     const university = await this.universityRepository.findOne({ where: { id } });
     if (!university) {
@@ -68,14 +75,14 @@ export class UniversityService {
     return {
       status: HttpStatus.OK,
       mensaje: 'Universidad obtenida exitosamente',
-      university,
+      university: this.formatUniversityForResponse(university),
     };
   }
 
   async update(id: number, updateData: Partial<CreateUniversityDto>): Promise<{
     status: number;
     mensaje: string;
-    university: UniversityEntity;
+    university: any;
   }> {
     const university = await this.universityRepository.findOne({ where: { id } });
     if (!university) {
@@ -106,7 +113,7 @@ export class UniversityService {
     return {
       status: HttpStatus.OK,
       mensaje: 'Universidad actualizada exitosamente',
-      university: updatedUniversity,
+      university: this.formatUniversityForResponse(updatedUniversity),
     };
   }
 
