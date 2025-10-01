@@ -49,3 +49,34 @@ docker-compose exec postgres psql -U postgres -d university_db -c "\dt"
 ```bash
 docker-compose exec postgres psql -U postgres -d university_db -c "SELECT * FROM universities;"
 ```
+
+### Pruebas de API
+
+#### Crear universidad (curl)
+```bash
+curl -X POST http://localhost/universities \
+  -H "Content-Type: application/json" \
+  -d '{"name": "  UNIVERSIDAD   javériana   "}'
+```
+
+#### Obtener todas las universidades (curl)
+```bash
+curl -X GET http://localhost/universities
+```
+
+#### Obtener universidad por ID (curl)
+```bash
+curl -X GET http://localhost/universities/1
+```
+
+#### Actualizar universidad (curl)
+```bash
+curl -X PUT http://localhost/universities/1 \
+  -H "Content-Type: application/json" \
+  -d '{"name": "Universidad Javeriana Actualizada"}'
+```
+
+#### Eliminar universidad (curl)
+```bash
+curl -X DELETE http://localhost/universities/1
+```
