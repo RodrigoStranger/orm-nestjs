@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { UniversityModule } from './university/university.module';
+import { HealthController } from './health/health.controller';
 
 @Module({
   imports: [
@@ -20,5 +21,6 @@ import { UniversityModule } from './university/university.module';
     }),
     UniversityModule,
   ],
+  controllers: [HealthController],
 })
 export class AppModule {}
