@@ -8,17 +8,19 @@ import { HealthController } from './health/health.controller';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+      envFilePath: '.env', // Especificar explícitamente el archivo .env
+      cache: true, // Cache de variables para mejor rendimiento
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: process.env.DB_HOST || 'localhost',
-      port: parseInt(process.env.DB_PORT || '5432', 10),
-      username: process.env.DB_USERNAME || 'postgres',
-      password: process.env.DB_PASSWORD || 'password',
-      database: process.env.DB_NAME || 'university_db',
+      host: process.env.DB_HOST!,
+      port: parseInt(process.env.DB_PORT!, 10),
+      username: process.env.DB_USERNAME!,
+      password: process.env.DB_PASSWORD!,
+      database: process.env.DB_NAME!,
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      synchronize: true, // Siempre sincronizar para desarrollo
-      dropSchema: process.env.NODE_ENV === 'development', // Recrear schema en desarrollo
+      synchronize: true,
+      dropSchema: process.env.NODE_ENV === 'development',
       logging: process.env.NODE_ENV === 'development' ? ['query', 'error'] : ['error'],
     }),
     UniversityModule,
