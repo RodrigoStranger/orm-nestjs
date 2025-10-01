@@ -8,8 +8,8 @@ import { HealthController } from './health/health.controller';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: '.env', // Especificar explícitamente el archivo .env
-      cache: true, // Cache de variables para mejor rendimiento
+      envFilePath: '.env',
+      cache: true,
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
